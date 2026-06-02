@@ -1,0 +1,16 @@
+name: CI/CD Docker local
+
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: self-hosted
+    steps: 
+      - name: Checkout code dari Github
+        uses: actions/checkout@v4
+      - name: Hentikan dan Hancurkan sistem lama
+        run: docker compose down
+      - name: Bangun dan Jalankan sistem baru
+        run: docker compose up -d --build
