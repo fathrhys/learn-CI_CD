@@ -4,4 +4,4 @@ services:
     container_name: web-cicd
     ports:
       - "8090:80"
-
+    restart: always
