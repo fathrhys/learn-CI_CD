@@ -1,2 +1,816 @@
-<h1>Halo Pak Putra, Selamat Pagi, ini Web CI/CD Pertamaku!</h1>
-<p>Deploy otomatis berhasil, port sudah diganti ke 8090!</p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Halaman Web Lengkap dengan Tampilan Dashboard">
+    <meta name="author" content="AI Assistant">
+    <title>Web Dashboard & Landing Page Eksperimental</title>
+    <style>
+        /* =========================================
+           1. CSS RESET & VARIABEL GLOBAL
+        ========================================= */
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --danger: #EF4444;
+            --dark: #111827;
+            --dark-light: #374151;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --gray: #9CA3AF;
+            --border: #E5E7EB;
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        /* =========================================
+           2. TYPOGRAPHY & UTILITIES
+        ========================================= */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--dark);
+        }
+
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .text-right { text-align: right; }
+        .text-primary { color: var(--primary); }
+        .text-secondary { color: var(--secondary); }
+        
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        .mt-5 { margin-top: 3rem; }
+        
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+        .mb-5 { margin-bottom: 3rem; }
+
+        .p-2 { padding: 1rem; }
+        .p-3 { padding: 1.5rem; }
+        .p-4 { padding: 2rem; }
+
+        /* =========================================
+           3. KOMPONEN UI DASAR
+        ========================================= */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-danger { background-color: var(--danger); color: var(--white); }
+        .btn-danger:hover { background-color: #DC2626; }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background-color: #D1FAE5; color: #065F46; }
+        .badge-warning { background-color: #FEF3C7; color: #92400E; }
+        .badge-danger { background-color: #FEE2E2; color: #991B1B; }
+
+        /* =========================================
+           4. LAYOUT & STRUKTUR
+        ========================================= */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* =========================================
+           5. HEADER & NAVIGASI
+        ========================================= */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--dark-light);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* =========================================
+           6. HERO SECTION
+        ========================================= */
+        .hero {
+            margin-top: 70px;
+            background: linear-gradient(135deg, #1E1B4B 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: #E0E7FF;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        /* =========================================
+           7. DASHBOARD WIDGETS
+        ========================================= */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .widget-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--primary);
+        }
+
+        .widget-card h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .widget-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .widget-card .trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            color: var(--secondary);
+        }
+
+        /* =========================================
+           8. TABEL DATA (PANJANG)
+        ========================================= */
+        .table-container {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            overflow-x: auto;
+            margin-top: 3rem;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #F9FAFB;
+            font-weight: 600;
+            color: var(--dark-light);
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        tbody tr:hover {
+            background-color: #F9FAFB;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* =========================================
+           9. FEATURES GRID
+        ========================================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #EEF2FF;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* =========================================
+           10. FORMULIR KONTAK
+        ========================================= */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* =========================================
+           11. FOOTER
+        ========================================= */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--gray);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dark-light);
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">SuperWeb.io</div>
+            <nav class="nav-links">
+                <a href="#home">Beranda</a>
+                <a href="#dashboard">Dashboard</a>
+                <a href="#features">Fitur</a>
+                <a href="#contact">Kontak</a>
+                <button class="btn btn-primary" onclick="alert('Fitur Login Sedang Dikembangkan!')">Masuk</button>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>Sistem Manajemen Terpadu</h1>
+            <p>Platform berbasis web untuk mengelola data operasional, melacak analitik secara real-time, dan meningkatkan produktivitas tim Anda dalam satu tampilan dashboard.</p>
+            <div class="hero-buttons">
+                <a href="#dashboard" class="btn btn-primary">Lihat Dashboard</a>
+                <a href="#features" class="btn btn-outline" style="background: white;">Pelajari Fitur</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div id="dashboard" class="widget-grid">
+            <div class="widget-card">
+                <h3>Total Pengguna Aktif</h3>
+                <div class="value">24,592</div>
+                <div class="trend">▲ +12.5% dari bulan lalu</div>
+            </div>
+            <div class="widget-card" style="border-top-color: var(--secondary);">
+                <h3>Pendapatan Bulan Ini</h3>
+                <div class="value">Rp 84.5M</div>
+                <div class="trend text-secondary">▲ +5.2% dari target</div>
+            </div>
+            <div class="widget-card" style="border-top-color: var(--accent);">
+                <h3>Tiket Dukungan Terbuka</h3>
+                <div class="value">142</div>
+                <div class="trend" style="color: var(--danger);">▼ -2.4% penanganan lambat</div>
+            </div>
+            <div class="widget-card" style="border-top-color: var(--danger);">
+                <h3>Server Uptime</h3>
+                <div class="value">99.98%</div>
+                <div class="trend">▲ Sistem Berjalan Optimal</div>
+            </div>
+        </div>
+
+        <div class="table-container mt-5">
+            <div class="table-header">
+                <h2>Laporan Transaksi Terbaru</h2>
+                <button class="btn btn-primary" onclick="alert('Mengunduh Laporan CSV...')">Unduh Laporan</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Transaksi</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Tanggal</th>
+                        <th>Jumlah</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td>#TRX-9001</td>
+                        <td>Budi Santoso</td>
+                        <td>12 Okt 2026</td>
+                        <td>Rp 1.250.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9002</td>
+                        <td>Siti Aminah</td>
+                        <td>12 Okt 2026</td>
+                        <td>Rp 850.000</td>
+                        <td><span class="badge badge-warning">Diproses</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9003</td>
+                        <td>Andi Wijaya</td>
+                        <td>11 Okt 2026</td>
+                        <td>Rp 3.400.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9004</td>
+                        <td>Rina Melati</td>
+                        <td>11 Okt 2026</td>
+                        <td>Rp 450.000</td>
+                        <td><span class="badge badge-danger">Gagal</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9005</td>
+                        <td>Joko Anwar</td>
+                        <td>10 Okt 2026</td>
+                        <td>Rp 5.120.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9006</td>
+                        <td>Maya Sari</td>
+                        <td>10 Okt 2026</td>
+                        <td>Rp 2.100.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9007</td>
+                        <td>Deni Saputra</td>
+                        <td>09 Okt 2026</td>
+                        <td>Rp 750.000</td>
+                        <td><span class="badge badge-warning">Diproses</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9008</td>
+                        <td>Lina Marlina</td>
+                        <td>09 Okt 2026</td>
+                        <td>Rp 1.150.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9009</td>
+                        <td>Reza Rahadian</td>
+                        <td>08 Okt 2026</td>
+                        <td>Rp 4.250.000</td>
+                        <td><span class="badge badge-danger">Gagal</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#TRX-9010</td>
+                        <td>Diana Putri</td>
+                        <td>08 Okt 2026</td>
+                        <td>Rp 950.000</td>
+                        <td><span class="badge badge-success">Berhasil</span></td>
+                        <td class="action-btns">
+                            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;">Detail</button>
+                        </td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="section-title text-center">Fitur Unggulan Sistem</h2>
+            <p class="text-center mb-5" style="color: var(--gray); max-width: 600px; margin-left: auto; margin-right: auto;">
+                Kami merancang platform ini dengan berbagai alat pendukung untuk memastikan operasional bisnis Anda berjalan lancar tanpa hambatan teknis.
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Performa Tinggi</h3>
+                    <p class="mt-2 text-gray">Sistem dioptimalkan untuk memuat jutaan baris data dalam hitungan milidetik tanpa membebani peramban pengguna.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Keamanan Enkripsi</h3>
+                    <p class="mt-2 text-gray">Seluruh aliran data diamankan dengan standar enkripsi AES-256 dan sertifikat SSL tingkat perbankan.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analitik Real-time</h3>
+                    <p class="mt-2 text-gray">Dapatkan wawasan mendalam secara instan dengan grafik dan laporan yang diperbarui secara otomatis tiap detik.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Desain Responsif</h3>
+                    <p class="mt-2 text-gray">Akses dashboard ini dari perangkat apa pun, mulai dari komputer desktop hingga ponsel cerdas Anda.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">☁️</div>
+                    <h3>Pencadangan Cloud</h3>
+                    <p class="mt-2 text-gray">Data Anda disinkronisasi ke server awan secara otomatis. Anda tidak akan pernah kehilangan data penting lagi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Dukungan 24/7</h3>
+                    <p class="mt-2 text-gray">Tim teknis kami selalu siaga kapan pun Anda membutuhkan bantuan konfigurasi maupun penyelesaian masalah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section" style="background-color: var(--white);">
+        <div class="container">
+            <h2 class="section-title text-center">Hubungi Dukungan Teknis</h2>
+            <p class="text-center mb-5" style="color: var(--gray);">Silakan isi formulir di bawah ini untuk melaporkan masalah atau meminta fitur kustom.</p>
+            
+            <div class="form-container">
+                <form id="contactForm" onsubmit="event.preventDefault(); alert('Pesan Anda berhasil dikirim!'); this.reset();">
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap</label>
+                        <input type="text" id="name" class="form-control" placeholder="Masukkan nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Alamat Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="nama@perusahaan.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subjek</label>
+                        <select id="subject" class="form-control" required>
+                            <option value="">Pilih Kategori...</option>
+                            <option value="bug">Laporan Bug / Error</option>
+                            <option value="billing">Pertanyaan Tagihan</option>
+                            <option value="feature">Permintaan Fitur</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan / Deskripsi Masalah</label>
+                        <textarea id="message" class="form-control" placeholder="Jelaskan detail pertanyaan Anda di sini..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Tiket Dukungan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>SuperWeb.io</h4>
+                    <p style="color: var(--gray); margin-top: 1rem; line-height: 1.8;">
+                        Kami membangun perangkat lunak modern untuk mengotomatiskan rutinitas Anda sehingga Anda dapat fokus mengembangkan bisnis ke level berikutnya.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <h4>Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#features">Fitur Kami</a></li>
+                        <li><a href="#">Harga & Paket</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal & Bantuan</h4>
+                    <ul>
+                        <li><a href="#">Syarat dan Ketentuan</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#contact">Pusat Bantuan</a></li>
+                        <li><a href="#">Dokumentasi API</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Kantor Pusat</h4>
+                    <ul style="color: var(--gray);">
+                        <li>Gedung Teknologi Tower, Lt. 14</li>
+                        <li>Jl. Sudirman Kav. 21, Jakarta</li>
+                        <li>Indonesia 12190</li>
+                        <li class="mt-2">Email: hello@superweb.io</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 SuperWeb Generatif. Dibuat khusus sebagai demonstrasi kode komprehensif. Semua Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simulasi Menambahkan Data Dinamis ke Tabel untuk memperpanjang list data
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('tableBody');
+            
+            // Array nama-nama untuk dummy data
+            const names = [
+                'Bagus Prakoso', 'Citra Kirana', 'Dodo Sudibyo', 'Eka Putra',
+                'Fahmi Idris', 'Gita Gutawa', 'Hadi Sucipto', 'Intan Nuraini',
+                'Jamal Mirdad', 'Kiki Amalia', 'Lukman Hakim', 'Nadia Vega'
+            ];
+            
+            const statuses = [
+                { text: 'Berhasil', class: 'badge-success' },
+                { text: 'Diproses', class: 'badge-warning' },
+                { text: 'Gagal', class: 'badge-danger' }
+            ];
+
+            // Men-generate tambahan 40 baris data secara otomatis
+            for(let i = 11; i <= 50; i++) {
+                const randomName = names[Math.floor(Math.random() * names.length)];
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                const randomAmount = (Math.floor(Math.random() * 50) + 1) * 100000;
+                
+                // Format tanggal acak di bulan Oktober
+                const day = Math.floor(Math.random() * 7) + 1; 
+                const dateStr = `0${day} Okt 2026`;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#TRX-90${i < 100 ? (i < 10 ? '0'+i : i) : i}</td>
+                    <td>${randomName}</td>
+                    <td>${dateStr}</td>
+                    <td>Rp ${randomAmount.toLocaleString('id-ID')}</td>
+                    <td><span class="badge ${randomStatus.class}">${randomStatus.text}</span></td>
+                    <td class="action-btns">
+                        <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size: 0.8rem;" onclick="alert('Detail Transaksi #TRX-90${i}')">Detail</button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            }
+
+            // Smooth scrolling untuk navigasi internal
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
